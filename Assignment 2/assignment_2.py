@@ -63,7 +63,7 @@ def scaling(I):
         -------
             The normalized image between 0-255 range.
     """
-    return (((I-I.min())*255.0)/(I.max()))
+    return (((I-I.min())*255.0)/(I.max()-I.min()))
 
 def bilateral_filter(I, n, sigma_s, sigma_r):
     """
