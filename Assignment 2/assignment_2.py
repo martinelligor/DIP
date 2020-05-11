@@ -1,6 +1,7 @@
 """
                     Nome: Igor Martinelli   
                     NUSP: 9006336
+                    Github Repository: https://github.com/martinelligor/DIP/tree/master/Assignment%202
                     SCC5830 - Digital Image Processing
                     2020/1
                     Assignment 2: Image Enhancement and Filtering
