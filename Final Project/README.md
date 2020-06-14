@@ -13,7 +13,7 @@ The input images of this project were collected by taking photos of a puzzle. Th
 ![](images/7.png)
 **Figure 2** - Second example of input image
 
-The other images can be found in [Images folder](images/)
+The other images can be found in [Images folder](images/) (More images will be added in future)
 ## Steps to reach the objective
 For this project, we will define some steps to develop the objective of this tool and, when obtaining them, improvements will be added. The steps are:
 
