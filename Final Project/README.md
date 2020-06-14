@@ -27,7 +27,7 @@ To follow restrictions needs to be considered to reach the objective well.
 
 - The pieces can't be superposed.
 - Good ilumination is needed to the images to preserve it's characteristics.
-- The captured images needs to have an 90$^{\circ}$ angle with the surface to avoid problems with positioning.
+- The captured images needs to have an 90&deg; angle with the surface to avoid problems with positioning.
 - The puzzle pieces must stay in a blank surface or in a surface that preserves good enough it's colors.
 
 ## First results
