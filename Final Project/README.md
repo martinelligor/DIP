@@ -5,12 +5,12 @@
 The task of build a puzzle is very nice and could be hard sometimes, depending on the size of the puzzle. In cases that the puzzle has more than five hundred, a thousand of pieces or even more, it's quiet interesting if we had a tool that could count the remaining pieces with the objective to observe your evolution. Thinking in this, thi project proposes the development of an algorithm with the objective of detecting how many pieces are remaining of a puzzle, based on an image of the remaining pieces, on a surface.
 
 ## Input images
-The input images of this project were collected by taking photos of a puzzle. The type of the file is .jpg and they were taken in a blank surface. Below we can see two examples of the photos.
+The input images of this project were collected by taking photos of a puzzle. The type of the file is .png and they were taken in a blank surface. Below we can see two examples of the photos.
 
-![](/images/4.jpg)
+![](/images/4.png)
 **Figure 1** - First example of input image
 
-![](/images/7.jpg)
+![](/images/7.png)
 **Figure 2** - Second example of input image
 
 ## Steps to reach the objective
