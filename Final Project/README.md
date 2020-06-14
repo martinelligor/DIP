@@ -7,12 +7,13 @@ The task of build a puzzle is very nice and could be hard sometimes, depending o
 ## Input images
 The input images of this project were collected by taking photos of a puzzle. The type of the file is .png and they were taken in a blank surface. Below we can see two examples of the photos.
 
-![](/images/4.png)
+![](/Final Project/images/4.png)
 **Figure 1** - First example of input image
 
-![](/images/7.png)
+![](/Final Project/images/7.png)
 **Figure 2** - Second example of input image
 
+The other images can be found in [Images folder](/Final Project/images/)
 ## Steps to reach the objective
 For this project, we will define some steps to develop the objective of this tool and, when obtaining them, improvements will be added. The steps are:
 
@@ -31,4 +32,4 @@ To follow restrictions needs to be considered to reach the objective well.
 
 ## First results
 
-The first results can be founded in [Notebook](final_project.ipynb) and the scripts are located in [Scripts folder](/scripts/)
+The first results can be founded in [Notebook](/Final Project/final_project.ipynb) and the scripts are located in [Scripts folder](/Final Project/scripts/)
