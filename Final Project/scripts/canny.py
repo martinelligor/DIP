@@ -1,27 +1,28 @@
-from scipy import ndimage
+"""
+                    Nome: Igor Martinelli   
+                    NUSP: 9006336
+                    SCC5830 - Digital Image Processing
+                    2020/1
+                    Final Project: Remaining puzzle pieces counter
+"""
+import numpy as np
 from scipy.ndimage.filters import convolve
 
-from scipy import misc
-import numpy as np
-
 class Canny:
-    def __init__(self, img, sigma=1, kernel_size=5, weak_pixel=75, strong_pixel=255, lowthreshold=0.05, highthreshold=0.15):
+    """Class responsible to apply the canny edge detector algorithm in an image and the parameters given as input.
+    """
+    def __init__(self, img, sigma=1, kernel_size=5, weak_pixel=75, strong_pixel=255, low_threshold=0.05, high_threshold=0.15):
         self.img = img
-        self.img_smoothed = None
-        self.gradientMat = None
-        self.thetaMat = None
-        self.nonMaxImg = None
-        self.thresholdImg = None
-        self.weak_pixel = weak_pixel
-        self.strong_pixel = strong_pixel
         self.sigma = sigma
+        self.weak_pixel = weak_pixel
         self.kernel_size = kernel_size
-        self.lowThreshold = lowthreshold
-        self.highThreshold = highthreshold
-        return 
+        self.strong_pixel = strong_pixel
+        self.low_threshold = low_threshold
+        self.high_threshold = high_threshold
     
     def gaussian_kernel(self, size, sigma=1.0):
-        """Function that generates a gaussian filter given a k and sigma.
+        """Function that generates a gaussian filter given a k and sigma. That step is used in Canny edge detection
+           algorithm to smooth image in order to remove noise.
 
         Parameters
         ----------
@@ -42,11 +43,24 @@ class Canny:
         return filt/np.sum(filt)
     
     def sobel_filters(self, img):
-        Kx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
-        Ky = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
+        """Function that generates sobel filters to be used in the canny edge detection process. This step intensifies
+           the gradients of the image.
 
-        Ix = ndimage.filters.convolve(img, Kx)
-        Iy = ndimage.filters.convolve(img, Ky)
+        Parameters
+        ----------
+        img : (numpy.ndarray)
+            The 2-D array that represents the image
+
+        Returns
+        -------
+        (numpy.ndarray)
+            The image after the sobel operation.
+        """
+        Kx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float64)
+        Ky = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float64)
+
+        Ix = convolve(img, Kx)
+        Iy = convolve(img, Ky)
 
         G = np.hypot(Ix, Iy)
         G = G / G.max() * 255
@@ -54,20 +68,33 @@ class Canny:
         return (G, theta)
     
 
-    def non_max_suppression(self, img, D):
-        M, N = img.shape
-        Z = np.zeros((M,N), dtype=np.int32)
-        angle = D * 180. / np.pi
+    def non_maximum_suppression(self, img, d):
+        """Function that applies the non maximum suppression step in the canny edge detector
+
+        Parameters
+        ----------
+        img : (numpy.ndarray)
+            The image with the gradients intensified
+        d : [type]
+            [description]
+
+        Returns
+        -------
+        (numpy.ndarray)
+            The same image after non maximum supression step.
+        """
+        m, n = img.shape
+        z = np.zeros((m, n), dtype=np.int64)
+        angle = d*180./np.pi
         angle[angle < 0] += 180
 
-
-        for i in range(1,M-1):
-            for j in range(1,N-1):
+        for i in range(1, m-1):
+            for j in range(1, n-1):
                 try:
                     q = 255
                     r = 255
 
-                   #angle 0
+                    #angle 0
                     if (0 <= angle[i,j] < 22.5) or (157.5 <= angle[i,j] <= 180):
                         q = img[i, j+1]
                         r = img[i, j-1]
@@ -85,63 +112,77 @@ class Canny:
                         r = img[i+1, j+1]
 
                     if (img[i,j] >= q) and (img[i,j] >= r):
-                        Z[i,j] = img[i,j]
+                        z[i,j] = img[i,j]
                     else:
-                        Z[i,j] = 0
-
-
-                except IndexError as e:
+                        z[i,j] = 0
+                except:
                     pass
-
-        return Z
+        return z
 
     def threshold(self, img):
+        """This function applies a threshold in the image to provide a more accurate representation of real edges in an image.
 
-        highThreshold = img.max() * self.highThreshold;
-        lowThreshold = highThreshold * self.lowThreshold;
+        Parameters
+        ----------
+        img : (numpy.ndarray)
+            The image after non maximum supression step.
 
-        M, N = img.shape
-        res = np.zeros((M,N), dtype=np.int32)
+        Returns
+        -------
+        (numpy.ndarray)
+            The same image as input after the double threshold step.
+        """
+        high_threshold = img.max() * self.high_threshold
+        low_threshold = high_threshold * self.low_threshold
 
-        weak = np.int32(self.weak_pixel)
-        strong = np.int32(self.strong_pixel)
+        res = np.zeros(img.shape, dtype=np.int64)
 
-        strong_i, strong_j = np.where(img >= highThreshold)
-        zeros_i, zeros_j = np.where(img < lowThreshold)
+        res[np.where(img >= high_threshold)] = np.int64(self.strong_pixel)
+        res[np.where((img <= high_threshold) & (img >= low_threshold))] = np.int64(self.weak_pixel)
 
-        weak_i, weak_j = np.where((img <= highThreshold) & (img >= lowThreshold))
-
-        res[strong_i, strong_j] = strong
-        res[weak_i, weak_j] = weak
-
-        return (res)
+        return res
 
     def hysteresis(self, img):
+        """This function is resposible to realize the edge tracking by hysteresis.
 
-        M, N = img.shape
-        weak = self.weak_pixel
-        strong = self.strong_pixel
+        Parameters
+        ----------
+        img : (numpy.ndarray)
+            The image after the double-threshold step.
 
-        for i in range(1, M-1):
-            for j in range(1, N-1):
-                if (img[i,j] == weak):
+        Returns
+        -------
+        (numpy.ndarray)
+            The same image given as input after the edge tracking step.
+        """
+        m, n = img.shape
+        for i in range(1, m-1):
+            for j in range(1, n-1):
+                if (img[i,j] == self.weak_pixel):
                     try:
-                        if ((img[i+1, j-1] == strong) or (img[i+1, j] == strong) or (img[i+1, j+1] == strong)
-                            or (img[i, j-1] == strong) or (img[i, j+1] == strong)
-                            or (img[i-1, j-1] == strong) or (img[i-1, j] == strong) or (img[i-1, j+1] == strong)):
-                            img[i, j] = strong
+                        if ((img[i+1, j-1] == self.strong_pixel) or (img[i+1, j] == self.strong_pixel) or (img[i+1, j+1] == self.strong_pixel)
+                            or (img[i, j-1] == self.strong_pixel) or (img[i, j+1] == self.strong_pixel)
+                            or (img[i-1, j-1] == self.strong_pixel) or (img[i-1, j] == self.strong_pixel) or (img[i-1, j+1] == self.strong_pixel)):
+                            img[i, j] = self.strong_pixel
                         else:
                             img[i, j] = 0
-                    except IndexError as e:
+                    except:
                         pass
 
         return img
     
-    def detect(self):
+    def canny(self):
+        """This function realizes the five steps in the image to acquire the edges of the image.
+
+        Returns
+        -------
+        (numpy.ndarray)
+            The detected edges of the image.
+        """
         self.img_smoothed = convolve(self.img, self.gaussian_kernel(self.kernel_size, self.sigma))
-        self.gradientMat, self.thetaMat = self.sobel_filters(self.img_smoothed)
-        self.nonMaxImg = self.non_max_suppression(self.gradientMat, self.thetaMat)
-        self.thresholdImg = self.threshold(self.nonMaxImg)
-        img_final = self.hysteresis(self.thresholdImg)
+        self.gradient, self.theta = self.sobel_filters(self.img_smoothed)
+        self.non_maximum_suppression_img = self.non_maximum_suppression(self.gradient, self.theta)
+        self.threshold_img = self.threshold(self.non_maximum_suppression_img)
+        img_final = self.hysteresis(self.threshold_img)
 
         return img_final
