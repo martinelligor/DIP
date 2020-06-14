@@ -33,3 +33,9 @@ To follow restrictions needs to be considered to reach the objective well.
 ## First results
 
 The first results can be founded in [Notebook](final_project.ipynb) and the scripts are located in [Scripts folder](scripts/)
+
+## References 
+
+[1]  Canny   edge   detector   on   medium.https://towardsdatascience.com/canny-edge-detection-step-by-step-in-python-computer-vision-b49c3a2d8123.
+[2]  Canny edge detector on wikipedia.https://en.wikipedia.org/wiki/Canny_edge_detector.
+[3]  R. Gonzalez and R. Woods.Processamento Digital De Imagens.  ADDISONWESLEY BRA.
