@@ -34,6 +34,10 @@ To follow restrictions needs to be considered to reach the objective well.
 
 The results can be found in [Notebook](final_project.ipynb), the scripts are located in [Scripts folder](scripts/) and the report of this work can be found [Here](final_report.pdf)
 
+## Presentation
+
+The video for the presentation can be watched in https://drive.google.com/file/d/17RnqEjv6Z8ModI4tvjcuQZNlyPOmb6Lu/view?usp=sharing
+
 ## References 
 
 [1]  Canny edge detector on medium. https://towardsdatascience.com/canny-edge-detection-step-by-step-in-python-computer-vision-b49c3a2d8123.
